@@ -8,24 +8,80 @@
     <meta charset="UTF-8">
     <title>The Psychic Game</title>
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<!--   <link rel="stylesheet" type="text/css" href="assets/css/style.css"> --> 
 </head>
 
 <body>
     <header>
         <h1>The Psychic Game</h1>
     </header>
-        <div class="instructions">
+        <div class="directions">
             <h3>Try to guess the letter </h3>
         </div>
-            <!--Empty Div for the tallies-->
-            <div id="game">
-                    <p id="wins">Wins: </p>
-                    <p id="losses">Losses: </p>
-                    <p id="guessLeft">Guesses Left: </p>
-                    <p id="let">Your Guesses so far: </p>
-            </div>
-        <a href="https://github.com/ThePalad1n/Psychic-Game">GitHub Repo</a>
-        <script type="text/javascript" src="C:\Users\evang\Upenn\Homework\Homework3\assets\javascript\game.js"></script>
+        <div>
+
+        </div>
+            <br>
+            <p id="wins">Wins: </p>
+            <br>
+            <p id="losses">Losses: </p>
+            <br>
+            <p id="guessesRemaining">Guesses Remaining: </p>
+            <br>
+            <p id="previousGuesses">Previous Guesses: </p>
+        </div>
+
+    <script type="text/javascript">
+
+    var alpha = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    var wins = 0;
+    var guessesRemaining = 10;
+    var losses = 0;
+    var previousGuesses = [];
+    alphaChoice = alpha[Math.floor(Math.random() * alpha.length)];
+
+
+document.onkeyup = function(event) {
+    var userGuess = event.key;
+        if (guessesRemaining > 0) {
+            if (userGuess === alphaChoice) {
+                updateScoreWin();
+                alert("You Win");
+            }
+
+            else
+            {
+                guessesRemaining--;
+                previousGuesses.push(userGuess);
+                updateGuessesRemaining();
+                updatePreviousGuesses();
+            }
+        }
+        else {
+            updateScoreLoss();
+        }
+    };
+
+function updateGuessesRemaining(){
+    document.querySelector("#guessesRemaining").innerHTML = "Remaining Guesses: " + guessesRemaining;
+}
+
+function updatePreviousGuesses(){
+    document.querySelector("#previousGuesses").innerHTML = "Previous Guesses: " + previousGuesses;
+}
+
+function updateScoreWin(){
+    wins++;
+    document.querySelector("#wins").innerHTML = "Wins: " + wins;
+    guessesRemaining = 10;
+}
+
+function updateScoreLoss(){
+    losses++;
+    document.querySelector("#losses").innerHTML = "Losses: " + losses;
+    guessesRemaining = 10;
+}
+
+        </script>
     </body>
 </html>
