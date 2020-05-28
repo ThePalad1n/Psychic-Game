@@ -1,87 +1,82 @@
 
 <!--Hmk3-->
 <!--Evan Green 03/01/2020-->
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 
 <head>
-    <meta charset="UTF-8">
-    <title>The Psychic Game</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-<!--   <link rel="stylesheet" type="text/css" href="assets/css/style.css"> --> 
+  <meta charset="UTF-8">
+  <title>Coding Boot Camp - Word Guess</title>
+
+  <!-- Bootstrap is used to make game look nicer -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
 </head>
 
 <body>
-    <header>
-        <h1>The Psychic Game</h1>
-    </header>
-        <div class="directions">
-            <h3>Try to guess the letter </h3>
+
+  <!-- Bootstrap Container will hold everything -->
+  <div class="container">
+    <!-- Jumbotron holds the title section -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>The Word Guess Game - Gemstone Edition</h1>
+        <h2>Guess the name of the gemstone</h2>
+        <small>Click any letter to begin...</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><strong>Word to Guess</strong></h3>
+          </div>
+          <div class="card-body">
+
+            <h3 id="word-blanks">_ _ _ _ _ _ _ _ _ </h3>
+          </div>
         </div>
-        <div>
 
-        </div>
-            <br>
-            <p id="wins">Wins: </p>
-            <br>
-            <p id="losses">Losses: </p>
-            <br>
-            <p id="guessesRemaining">Guesses Remaining: </p>
-            <br>
-            <p id="previousGuesses">Previous Guesses: </p>
+
+        <div class="card">
+          <div class="card-body">
+
+            <strong>Wrong Guesses: </strong> <span id="wrong-guesses"></span>
+          </div>
         </div>
 
-    <script type="text/javascript">
 
-    var alpha = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    var wins = 0;
-    var guessesRemaining = 10;
-    var losses = 0;
-    var previousGuesses = [];
-    alphaChoice = alpha[Math.floor(Math.random() * alpha.length)];
+        <div class="card">
+          <div class="card-body">
+
+            <strong>Guesses Left: </strong> <span id="guesses-left">9</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+
+            <strong>Wins: </strong> <span id="win-counter">0</span>
+          </div>
+        </div>
 
 
-document.onkeyup = function(event) {
-    var userGuess = event.key;
-        if (guessesRemaining > 0) {
-            if (userGuess === alphaChoice) {
-                updateScoreWin();
-                alert("You Win");
-            }
+        <div class="card">
+          <div class="card-body">
 
-            else
-            {
-                guessesRemaining--;
-                previousGuesses.push(userGuess);
-                updateGuessesRemaining();
-                updatePreviousGuesses();
-            }
-        }
-        else {
-            updateScoreLoss();
-        }
-    };
+            <strong>Losses: </strong> <span id="loss-counter">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-function updateGuessesRemaining(){
-    document.querySelector("#guessesRemaining").innerHTML = "Remaining Guesses: " + guessesRemaining;
-}
+  <script src="assets/javascript/game.js"></script>
+</body>
 
-function updatePreviousGuesses(){
-    document.querySelector("#previousGuesses").innerHTML = "Previous Guesses: " + previousGuesses;
-}
-
-function updateScoreWin(){
-    wins++;
-    document.querySelector("#wins").innerHTML = "Wins: " + wins;
-    guessesRemaining = 10;
-}
-
-function updateScoreLoss(){
-    losses++;
-    document.querySelector("#losses").innerHTML = "Losses: " + losses;
-    guessesRemaining = 10;
-}
-
-        </script>
-    </body>
 </html>
+

@@ -1,63 +1,107 @@
+// GLOBAL VARIABLES (accessible by all functions)
+// ==================================================================================================
 
-    var alpha = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    var wins = 0;
-    var guessesRemaining = 9;
-    var losses = 0;
-    var previousGuesses = [];
+// Array of Word Options (all lowercase)
+var wordsList = ["diamond", "sapphire", "ruby", "opal", "emerald", "moonstone",
+  "turquoise", "jade", "pearl", "amber", "Lapis", "topaz"];
+var chosenWord = "";
+var lettersInChosenWord = [];
+var numBlanks = 0;
+var blanksAndSuccesses = [];
+var wrongGuesses = [];
+var winCounter = 0;
+var lossCounter = 0;
+var numGuesses = 9;
 
-    /*
-    var userChoiceText = document.getElementById("userchoice");
-    var alphaChoiceText = document.getElementById("alpha");
-    var winsText = document.getElementById("wins");
-    var losesText = document.getElementById("losses");
-    var guessesText = document.getElementById("guessesRemaining");
-*/
- //When key is released it becomes the users guess
-function startGame(){
-document.onkeyup = function(event) {
-    var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
-        if (guessesRemaining > 0) {
-            if (userGuess == alphaSelect.alphaChoice) {
-                wins++;
-                document.querySelector('#wins').innerHTML = "Wins: " + wins;
-                userGuess = userGuess.toUpperCase();
-                resetGame();
-            }
-        } 
-        else if (guessesRemaining == 0) {
-            // Then we will loss and we'll update the html to display the loss 
-            losses++;
-            document.querySelector('#losses').innerHTML = "Losses: " + losses;
-            resetGame();
-        }
-        return false;
-    };
-}   
+// =========================================================================================
 
-function ugr() {
-    // Here we are grabbing the HTML element and setting it equal to the guessesLeft. (i.e. guessesLeft will get displayed in HTML)
-    document.querySelector('#guessRemaining').innerHTML = "Guesses remaining: " + guessesRemaining;
-};
+function startGame() {
 
-function alphaSelect() {
-    this.alphaChoice = this.computerChoices[Math.floor(Math.random() * this.computerChoices.length)];
-};
+  numGuesses = 9;
+  chosenWord = wordsList[Math.floor(Math.random() * wordsList.length)];
+  lettersInChosenWord = chosenWord.split("");
+  numBlanks = lettersInChosenWord.length;
 
-function upg() {
-    // Here we take the guesses the user has tried -- then display it as letters separated by commas. 
-    document.querySelector('#previousGuesses').innerHTML = "Previous Guesses: " + previousGuesses.join(', ');
-};
+  console.log(chosenWord);
 
-function updateScore() {
-    wins++;
-    resetGame();
-};
+  blanksAndSuccesses = [];
+  wrongGuesses = [];
 
-function resetGame(){
-    var guessesRemaining = 9;
-    var previousGuesses = [];
+  for (var i = 0; i < numBlanks; i++) {
+    blanksAndSuccesses.push("_");
+  }
+
+  console.log(blanksAndSuccesses);
+
+  document.getElementById("guesses-left").innerHTML = numGuesses;
+  document.getElementById("word-blanks").innerHTML = blanksAndSuccesses.join(" ");
+  document.getElementById("wrong-guesses").innerHTML = wrongGuesses.join(" ");
+}
+
+function checkLetters(letter) {
+
+  var letterInWord = false;
+
+  for (var i = 0; i < numBlanks; i++) {
+    if (chosenWord[i] === letter) {
+      letterInWord = true;
+    }
+  }
+
+  if (letterInWord) {
+
+    for (var j = 0; j < numBlanks; j++) {
+
+      if (chosenWord[j] === letter) {
+        blanksAndSuccesses[j] = letter;
+      }
+    }
+
+    console.log(blanksAndSuccesses);
+  }
+
+  else {
+    wrongGuesses.push(letter);
+    numGuesses--;
+  }
+}
+
+function roundComplete() {
+
+  console.log("WinCount: " + winCounter + " | LossCount: " + lossCounter + " | NumGuesses: " + numGuesses);
+  document.getElementById("guesses-left").innerHTML = numGuesses;
+  document.getElementById("word-blanks").innerHTML = blanksAndSuccesses.join(" ");
+  document.getElementById("wrong-guesses").innerHTML = wrongGuesses.join(" ");
+
+  if (lettersInChosenWord.toString() === blanksAndSuccesses.toString()) {
+    winCounter++;
+    alert("You win!");
+
+    document.getElementById("win-counter").innerHTML = winCounter;
     startGame();
-};
+  }
 
+  else if (numGuesses === 0) {
+
+    lossCounter++;
+
+    alert("You lose");
+
+    document.getElementById("loss-counter").innerHTML = lossCounter;
+
+    startGame();
+  }
+
+}
+
+// ==================================================================================================
 
 startGame();
+
+document.onkeyup = function(event) {
+  if (event.keyCode >= 65 && event.keyCode <= 90) {
+    var letterGuessed = event.key.toLowerCase();
+    checkLetters(letterGuessed);
+    roundComplete();
+  }
+};
